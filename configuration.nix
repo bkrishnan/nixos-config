@@ -55,6 +55,12 @@
     desktopManager.gnome.enable = true;
   };
 
+  # Enable the i3 window manager alongside GNOME
+  services.xserver.windowManager.i3 = {
+    enable = true;
+    package = pkgs.i3-gaps; # Use i3-gaps for gaps between windows
+  };
+
   # 1. Enable NVIDIA drivers in X11
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -149,6 +155,16 @@
     vim
     google-chrome
     vscode
+    i3blocks   # Status bar for i3
+    dmenu      # Application launcher
+    feh        # Lightweight image viewer (can set wallpapers)
+    rofi       # Alternative application launcher
+    picom      # Compositor for transparency and shadows
+    xorg.xrandr # Screen resolution utility
+    arandr     # Graphical display configuration tool
+    lxappearance # GTK theme switcher
+    nitrogen   # Wallpaper manager
+    pavucontrol # Audio control
   ];
 
   # Optional: Enable Wayland support for Chrome/Electron apps
