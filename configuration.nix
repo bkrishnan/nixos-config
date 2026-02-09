@@ -15,7 +15,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.resumeDevice = "/dev/disk/by-uuid/717f9b68-61b8-4d8c-8002-18061c02d539";
-  boot.kernelParams = [ "resume=UUID=717f9b68-61b8-4d8c-8002-18061c02d539" ];
+  boot.kernelParams = [ "resume=UUID=717f9b68-61b8-4d8c-8002-18061c02d539" "nvidia-drm.modeset=1" "video=efifb:off"];
   swapDevices = [ { device = "/dev/disk/by-uuid/717f9b68-61b8-4d8c-8002-18061c02d539"; } ];
 
 
@@ -43,7 +43,34 @@
   services.xserver = {
     enable = true;
     displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = false; # Crucial for legacy NVIDIA 470
     desktopManager.gnome.enable = true;
+  };
+
+  # 1. Enable NVIDIA drivers in X11
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  # 2. Configure NVIDIA settings
+  hardware.nvidia = {
+    # Fixes screen tearing and is required for some modern desktop features
+    modesetting.enable = true; 
+    
+    # Use the 470 legacy driver branch specifically
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+
+    # Optional: Open the settings menu (nvidia-settings)
+    nvidiaSettings = true;
+    
+    # Power management can be "experimental" on older cards; 
+    # keep false unless you have suspend/resume issues.
+    powerManagement.enable = false;
+  };
+
+  # 3. Graphics/OpenGL settings (Now 'hardware.graphics' in 24.11)
+  hardware.graphics = {
+    enable = true;
+    # Required for 32-bit games/apps (like Steam)
+    enable32Bit = true; 
   };
 
   # Configure keymap in X11
@@ -85,9 +112,11 @@
 
   # Allow proprietary drivers
   nixpkgs.config.allowUnfree = true;
+  # Add this line to accept the NVIDIA license
+  nixpkgs.config.nvidia.acceptLicense = true;
 
   # Boot with Broadcom drivers
-  boot.initrd.kernelModules = [ "wl" ];
+  boot.initrd.kernelModules = [ "wl" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
   boot.kernelModules = [ "wl" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
 
@@ -105,7 +134,11 @@
     git
     emacs
     vim
+    google-chrome
   ];
+
+  # Optional: Enable Wayland support for Chrome/Electron apps
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs.git = {
     enable = true;
