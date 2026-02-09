@@ -14,9 +14,17 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.resumeDevice = "/dev/disk/by-uuid/717f9b68-61b8-4d8c-8002-18061c02d539";
-  boot.kernelParams = [ "resume=UUID=717f9b68-61b8-4d8c-8002-18061c02d539" "nvidia-drm.modeset=1" "video=efifb:off"];
-  swapDevices = [ { device = "/dev/disk/by-uuid/717f9b68-61b8-4d8c-8002-18061c02d539"; } ];
+  boot.kernelParams = [
+   "nvidia-drm.modeset=1"
+   "video=efifb:off"
+  ];
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";       # Highly recommended for a balance of speed and compression
+    memoryPercent = 60;      # Percentage of total RAM to use for zram
+    priority = 10;           # Set higher than disk swap priority (if any)
+  };
 
 
   networking.hostName = "imac";
@@ -25,7 +33,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/New_York";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -63,9 +71,7 @@
     
     # Power management can be "experimental" on older cards; 
     # keep false unless you have suspend/resume issues.
-    powerManagement.enable = true;
-    # This helps with waking up specifically on older 400/500 series cards
-    powerManagement.finegrained = false;
+    powerManagement.enable = false;
   };
 
   # 3. Graphics/OpenGL settings (Now 'hardware.graphics' in 24.11)
@@ -116,18 +122,19 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Allow proprietary drivers
-  nixpkgs.config.allowUnfree = true;
-  # Add this line to accept the NVIDIA license
-  nixpkgs.config.nvidia.acceptLicense = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    nvidia.acceptLicense = true;
+    # Use a predicate so you don't have to update the version string manually
+    allowInsecurePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "broadcom-sta"
+    ];
+  };
 
   # Boot with Broadcom drivers
-  boot.initrd.kernelModules = [ "wl" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
+  boot.initrd.kernelModules = [ "wl"];
   boot.kernelModules = [ "wl" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "broadcom-sta-6.30.223.271-59-6.12.68"
-  ];
 
   # Optional: Blacklist conflicting open-source drivers
   boot.blacklistedKernelModules = [ "b43" "bcma" "brcmsmac" "ssb" ];
