@@ -63,7 +63,9 @@
     
     # Power management can be "experimental" on older cards; 
     # keep false unless you have suspend/resume issues.
-    powerManagement.enable = false;
+    powerManagement.enable = true;
+    # This helps with waking up specifically on older 400/500 series cards
+    powerManagement.finegrained = false;
   };
 
   # 3. Graphics/OpenGL settings (Now 'hardware.graphics' in 24.11)
@@ -135,13 +137,24 @@
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     git
+    fish
     emacs
     vim
     google-chrome
+    vscode
   ];
 
   # Optional: Enable Wayland support for Chrome/Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  # 2. Enable Fish properly (NixOS needs this to set up completions/paths)
+  programs.fish.enable = true;
+
+  # 3. Set Fish as the default shell for your user
+  users.users.bkrishnan.shell = pkgs.fish;
+
+  # 4. Optional: Enable Direnv (Great for Emacs/VSCode + Nix users)
+  programs.direnv.enable = true;
 
   programs.git = {
     enable = true;
