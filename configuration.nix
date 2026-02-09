@@ -102,6 +102,9 @@
     createHome = true;
   };
 
+  services.gnome.gnome-keyring.enable = true;
+  programs.ssh.startAgent = true;
+
   services.logrotate.enable = false;
 
   security.sudo.enable = true;
