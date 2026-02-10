@@ -110,9 +110,6 @@
     isNormalUser = true;
     description = "Bharath Krishnan";
     extraGroups = [ "networkmanager"  "wheel" "video" ];
-    packages = with pkgs; [
-      tree
-    ];
     createHome = true;
   };
 
@@ -123,9 +120,10 @@
 
   security.sudo.enable = true;
 
-  # programs.firefox.enable = true;
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Home Manager configuration
+  home-manager.backupFileExtension = "backup";
 
   # Allow proprietary drivers
   nixpkgs.config = {
@@ -149,12 +147,6 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    git
-    fish
-    emacs
-    vim
-    google-chrome
-    vscode
     i3blocks   # Status bar for i3
     dmenu      # Application launcher
     feh        # Lightweight image viewer (can set wallpapers)
@@ -170,28 +162,14 @@
   # Optional: Enable Wayland support for Chrome/Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  # 2. Enable Fish properly (NixOS needs this to set up completions/paths)
+  # Enable Fish at the system level
   programs.fish.enable = true;
 
-  # 3. Set Fish as the default shell for your user
+  # Set Fish as the default shell for the user
   users.users.bkrishnan.shell = pkgs.fish;
 
-  # 4. Optional: Enable Direnv (Great for Emacs/VSCode + Nix users)
+  # Enable Direnv
   programs.direnv.enable = true;
-
-  programs.git = {
-    enable = true;
-    config = {
-      user = {
-        name = "Bharath Krishnan";
-        email = "bkrishnan@gmail.com";
-      };
-      init = {
-        defaultBranch = "main";
-      };
-    };
-  };
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
