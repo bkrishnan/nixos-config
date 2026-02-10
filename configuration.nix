@@ -19,6 +19,11 @@
    "video=efifb:off"
   ];
 
+  # ZFS filesystem support
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.package = pkgs.zfs;
+  services.zfs.trim.enable = true;
+
   zramSwap = {
     enable = true;
     algorithm = "zstd";       # Highly recommended for a balance of speed and compression
@@ -28,6 +33,7 @@
 
 
   networking.hostName = "imac";
+  networking.hostId = "8425e349";
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
@@ -157,6 +163,7 @@
     lxappearance # GTK theme switcher
     nitrogen   # Wallpaper manager
     pavucontrol # Audio control
+    zfs        # ZFS filesystem tools and utilities
   ];
 
   # Optional: Enable Wayland support for Chrome/Electron apps
