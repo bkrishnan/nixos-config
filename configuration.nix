@@ -15,8 +15,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelParams = [
-   "nvidia-drm.modeset=1"
-   "video=efifb:off"
+    "nouveau.config=NvBoost=1"
+    "nouveau.modeset=1"
   ];
 
   # ZFS filesystem support
@@ -57,8 +57,9 @@
   services.xserver = {
     enable = true;
     displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = false; # Crucial for legacy NVIDIA 470
+    displayManager.gdm.wayland = true;
     desktopManager.gnome.enable = true;
+    displayManager.gdm.settings.daemon.WaylandEnable = lib.mkForce true;
   };
 
   # Enable the i3 window manager alongside GNOME
@@ -67,30 +68,23 @@
     package = pkgs.i3-gaps; # Use i3-gaps for gaps between windows
   };
 
-  # 1. Enable NVIDIA drivers in X11
-  services.xserver.videoDrivers = [ "nvidia" ];
+  # 1. Enable open source NVIDIA drivers instead of proprietary 470 to play nice with Wayland
+  services.xserver.videoDrivers = [ "nouveau" ];
 
   # 2. Configure NVIDIA settings
-  hardware.nvidia = {
-    # Fixes screen tearing and is required for some modern desktop features
-    modesetting.enable = true; 
-    
-    # Use the 470 legacy driver branch specifically
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-
-    # Optional: Open the settings menu (nvidia-settings)
-    nvidiaSettings = true;
-    
-    # Power management can be "experimental" on older cards; 
-    # keep false unless you have suspend/resume issues.
-    powerManagement.enable = false;
-  };
+  # Nouveau does not use the 'prime' block.
+  hardware.nvidia.modesetting.enable = true;
 
   # 3. Graphics/OpenGL settings (Now 'hardware.graphics' in 24.11)
   hardware.graphics = {
     enable = true;
     # Required for 32-bit games/apps (like Steam)
-    enable32Bit = true; 
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      intel-vaapi-driver # Hardware video accel for HD 4000
+      libvdpau-va-gl
+      mesa.drivers # Ensure Nouveau drivers are present
+    ];
   };
 
   # Configure keymap in X11
@@ -141,13 +135,13 @@
     ];
   };
 
-  # Boot with Broadcom drivers
-  boot.initrd.kernelModules = [ "wl"];
+  # Boot with Broadcom and Intel drivers
+  boot.initrd.kernelModules = [ "wl" "i915"];
   boot.kernelModules = [ "wl" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
 
   # Optional: Blacklist conflicting open-source drivers
-  boot.blacklistedKernelModules = [ "b43" "bcma" "brcmsmac" "ssb" ];
+  boot.blacklistedKernelModules = [ "b43" "bcma" "brcmsmac" "ssb" "nvidia" "nvidia_drm" "nvidia_modeset"];
 
 
   # List packages installed in system profile.
@@ -164,10 +158,25 @@
     nitrogen   # Wallpaper manager
     pavucontrol # Audio control
     zfs        # ZFS filesystem tools and utilities
+    # Need to verify GPU configurations
+    pciutils
+    glxinfo
+    libva-utils
   ];
 
-  # Optional: Enable Wayland support for Chrome/Electron apps
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # Enable Wayland support for Chrome/Electron apps
+  environment.sessionVariables = {
+    # Forces the desktop to use a simpler, more stable buffer path 
+    # This is the most common fix for Nouveau crashes on Wayland
+    MUTTER_DEBUG_FORCE_KMS_MODE = "simple";
+
+    # Ensure the Intel chip is the primary "drawing" device for the session
+    # This helps prevent the NVIDIA card from choking on window resizes
+    DRI_PRIME = "pci-0000_00_02_0"; 
+
+    # Keep your Chrome Wayland flag
+    NIXOS_OZONE_WL = "1";
+  };
 
   # Enable Fish at the system level
   programs.fish.enable = true;
@@ -219,7 +228,7 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "26.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
 }
 
