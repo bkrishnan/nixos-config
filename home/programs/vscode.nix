@@ -12,7 +12,8 @@
           rust-lang.rust-analyzer
         ];
         userSettings = {
-          "workbench.colorTheme" = "Solarized Dark";
+          "workbench.colorTheme" = "Solarized Light";
+          "github.copilot.nextEditSuggestions.enabled" = true;
         };
       };
     };

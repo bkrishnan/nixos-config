@@ -201,6 +201,14 @@
 
   programs.hyprland.enable = true;
 
+  # Install fonts system-wide
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+    noto-fonts
+    noto-fonts-color-emoji
+    font-awesome
+  ];
+
   # Enable Fish at the system level
   programs.fish.enable = true;
 

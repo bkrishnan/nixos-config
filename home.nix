@@ -8,6 +8,7 @@
     ./home/programs/vscode.nix
     ./home/programs/i3.nix
     ./home/programs/i3blocks.nix
+    ./home/programs/foot.nix
   ];
 
   home.stateVersion = "25.11";
