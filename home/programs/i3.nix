@@ -7,9 +7,12 @@
     config = {
       modifier = "Mod4";
       
-      terminal = "i3-sensible-terminal";
+      terminal = "alacritty";
       
-      fonts = [ "pango:System San Francisco Display 12" ];
+      fonts = {
+        names = [ "pango:System San Francisco Display" ];
+        size = 12.0;
+      };
 
       floating.modifier = "Mod4";
 
@@ -42,9 +45,9 @@
       ];
 
       keybindings = {
-        "Mod4+Return" = "exec i3-sensible-terminal";
+        "Mod4+Return" = "exec alacritty";
         "Mod4+Shift+q" = "kill";
-        "Mod4+d" = "exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh";
+        "Mod4+d" = "exec rofi -show drun";
         
         # Change focus
         "Mod4+j" = "focus left";

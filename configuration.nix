@@ -160,6 +160,7 @@
     pciutils
     mesa-demos  # Previously glxinfo
     libva-utils
+    alacritty
   ];
 
   environment.sessionVariables = {
