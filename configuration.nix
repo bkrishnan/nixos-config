@@ -56,7 +56,15 @@
   # Enable the X11 windowing system.
   services = {
     xserver.enable = true;
-    displayManager.ly.enable = true;
+    displayManager.ly = {
+      enable = true;
+      settings = {
+        # Direct Ly to the NixOS-generated Wayland session path
+        wayland_spec = "/run/current-system/sw/share/wayland-sessions";
+        # Also include X11 sessions for i3w
+        x_spec = "/run/current-system/sw/share/xsessions";
+      };
+    };
     displayManager.gdm.wayland = false;
     desktopManager.gnome.enable = true;
   };
@@ -161,20 +169,25 @@
     mesa-demos  # Previously glxinfo
     libva-utils
     alacritty
+    # Hyprland specific
+    wofi        # Wayland-native app launcher
+    waybar      # Status bar
   ];
 
   environment.sessionVariables = {
-    # Forces the desktop to use a simpler, more stable buffer path 
-    # This is the most common fix for Nouveau crashes on Wayland
-    MUTTER_DEBUG_FORCE_KMS_MODE = "simple";
+    # 1. Force the Intel chip (card0) to render the desktop
+    # and the NVIDIA card (card1) to simply display it.
+    AQ_DRM_DEVICES = "/dev/dri/card0:/dev/dri/card1";
 
-    # Ensure the Intel chip is the primary "drawing" device for the session
-    # This helps prevent the NVIDIA card from choking on window resizes
-    DRI_PRIME = "pci-0000_00_02_0"; 
-
-    # Prevent's Chrome from using Wayland
-    NIXOS_OZONE_WL = "0";
+    # 2. Wayland-specific app fixes
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENALBE_WAYLAND = "1";
+    SDL_VIDEODRIVER = "wayland";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    CLUTTER_BACKEND = "wayland";
   };
+
+  programs.hyprland.enable = true;
 
   # Enable Fish at the system level
   programs.fish.enable = true;
