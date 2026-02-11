@@ -3,13 +3,16 @@
 {
   xsession.windowManager.i3 = {
     enable = true;
-    package = pkgs.i3-gaps;
+    package = pkgs.i3;
     config = {
       modifier = "Mod4";
       
       terminal = "i3-sensible-terminal";
       
-      fonts = [ "pango:monospace 8" ];
+      fonts = {
+        names = [ "monospace" ];
+        size = 8.0;
+      };
 
       startup = [
         {

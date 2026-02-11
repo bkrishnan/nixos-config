@@ -2,10 +2,10 @@
   description = "iMac 2012 NixOS Configuration";
 
   inputs = {
-    # This locks your system to the 24.11 stable channel
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    # This locks your system to the 25.11 stable channel
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

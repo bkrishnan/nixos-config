@@ -54,9 +54,9 @@
   # };
 
   # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    displayManager.gdm.enable = true;
+  services = {
+    xserver.enable = true;
+    displayManager.ly.enable = true;
     displayManager.gdm.wayland = false;
     desktopManager.gnome.enable = true;
   };
@@ -64,7 +64,7 @@
   # Enable the i3 window manager alongside GNOME
   services.xserver.windowManager.i3 = {
     enable = true;
-    package = pkgs.i3-gaps; # Use i3-gaps for gaps between windows
+    package = pkgs.i3;
   };
 
   # 1. Enable open source NVIDIA drivers instead of proprietary 470 to play nice with Wayland
@@ -81,9 +81,8 @@
     enable32Bit = true;
     extraPackages = with pkgs; [
       intel-vaapi-driver   # Modern VA-API driver for Intel
-      vaapiIntel           # Specifically optimized for older HD 4000 (Ivy Bridge)
       libvdpau-va-gl       # Bridge for apps that only speak VDPAU (common in older apps)
-      mesa.drivers         # Essential for the Nouveau driver
+      mesa                 # Essential for the Nouveau driver
     ];
   };
 
@@ -114,7 +113,6 @@
   };
 
   services.gnome.gnome-keyring.enable = true;
-  programs.ssh.startAgent = true;
 
   services.logrotate.enable = false;
 
@@ -160,7 +158,7 @@
     zfs        # ZFS filesystem tools and utilities
     # Need to verify GPU configurations
     pciutils
-    glxinfo
+    mesa-demos  # Previously glxinfo
     libva-utils
   ];
 
@@ -227,7 +225,7 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 
 }
 
