@@ -9,10 +9,9 @@
       
       terminal = "i3-sensible-terminal";
       
-      fonts = {
-        names = [ "monospace" ];
-        size = 8.0;
-      };
+      fonts = [ "pango:System San Francisco Display 12" ];
+
+      floating.modifier = "Mod4";
 
       startup = [
         {
@@ -30,12 +29,22 @@
           always = false;
           notification = false;
         }
+        {
+          command = "nitrogen --restore";
+          always = false;
+          notification = false;
+        }
+        {
+          command = "xrandr --output DP-0 --off --output DP-1 --mode 1920x1080 --pos 0x180 --rotate normal --output DP-2 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --output DP-3 --off --output DP-4 --off";
+          always = true;
+          notification = false;
+        }
       ];
 
       keybindings = {
         "Mod4+Return" = "exec i3-sensible-terminal";
         "Mod4+Shift+q" = "kill";
-        "Mod4+d" = "exec --no-startup-id dmenu_run";
+        "Mod4+d" = "exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh";
         
         # Change focus
         "Mod4+j" = "focus left";
@@ -81,7 +90,7 @@
         "Mod4+a" = "focus parent";
         
         # Workspaces
-        "Mod4+1" = "workspace number 1";
+        "Mod4+1" = "workspace number 1: ";
         "Mod4+2" = "workspace number 2";
         "Mod4+3" = "workspace number 3";
         "Mod4+4" = "workspace number 4";
@@ -93,7 +102,7 @@
         "Mod4+0" = "workspace number 10";
         
         # Move to workspace
-        "Mod4+Shift+1" = "move container to workspace number 1";
+        "Mod4+Shift+1" = "move container to workspace number 1: ";
         "Mod4+Shift+2" = "move container to workspace number 2";
         "Mod4+Shift+3" = "move container to workspace number 3";
         "Mod4+Shift+4" = "move container to workspace number 4";
@@ -108,6 +117,16 @@
         "Mod4+Shift+c" = "reload";
         "Mod4+Shift+r" = "restart";
         "Mod4+Shift+e" = "exec \"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'\"";
+        
+        # Audio controls
+        "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && killall -SIGUSR1 i3status";
+        "XF86AudioLowerVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && killall -SIGUSR1 i3status";
+        "XF86AudioMute" = "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && killall -SIGUSR1 i3status";
+        "XF86AudioMicMute" = "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && killall -SIGUSR1 i3status";
+        
+        # Screenshots and utilities
+        "Print" = "exec flameshot gui";
+        "Mod4+Shift+x" = "exec i3lock -t -i /home/bkrishnan/Pictures/Wallpapers/alphacoders/1351629.png";
         
         # Resize mode
         "Mod4+r" = "mode \"resize\"";
@@ -133,9 +152,20 @@
 
       bars = [
         {
-          statusCommand = "${pkgs.i3status}/bin/i3status";
+          statusCommand = "SCRIPT_DIR=~/.config/i3blocks/scripts i3blocks";
+          colors = {
+            background = "#2f343f";
+            statusline = "#f3f4f5";
+          };
         }
       ];
     };
   };
+
+  # Additional packages needed for i3 setup
+  home.packages = with pkgs; [
+    nitrogen
+    flameshot
+    i3lock
+  ];
 }

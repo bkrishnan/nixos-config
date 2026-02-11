@@ -7,6 +7,7 @@
     ./home/programs/fish.nix
     ./home/programs/vscode.nix
     ./home/programs/i3.nix
+    ./home/programs/i3blocks.nix
   ];
 
   home.stateVersion = "24.11";
