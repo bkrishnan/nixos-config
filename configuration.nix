@@ -57,9 +57,8 @@
   services.xserver = {
     enable = true;
     displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;
+    displayManager.gdm.wayland = false;
     desktopManager.gnome.enable = true;
-    displayManager.gdm.settings.daemon.WaylandEnable = lib.mkForce true;
   };
 
   # Enable the i3 window manager alongside GNOME
@@ -81,9 +80,10 @@
     # Required for 32-bit games/apps (like Steam)
     enable32Bit = true;
     extraPackages = with pkgs; [
-      intel-vaapi-driver # Hardware video accel for HD 4000
-      libvdpau-va-gl
-      mesa.drivers # Ensure Nouveau drivers are present
+      intel-vaapi-driver   # Modern VA-API driver for Intel
+      vaapiIntel           # Specifically optimized for older HD 4000 (Ivy Bridge)
+      libvdpau-va-gl       # Bridge for apps that only speak VDPAU (common in older apps)
+      mesa.drivers         # Essential for the Nouveau driver
     ];
   };
 
@@ -164,7 +164,6 @@
     libva-utils
   ];
 
-  # Enable Wayland support for Chrome/Electron apps
   environment.sessionVariables = {
     # Forces the desktop to use a simpler, more stable buffer path 
     # This is the most common fix for Nouveau crashes on Wayland
@@ -174,8 +173,8 @@
     # This helps prevent the NVIDIA card from choking on window resizes
     DRI_PRIME = "pci-0000_00_02_0"; 
 
-    # Keep your Chrome Wayland flag
-    NIXOS_OZONE_WL = "1";
+    # Prevent's Chrome from using Wayland
+    NIXOS_OZONE_WL = "0";
   };
 
   # Enable Fish at the system level
