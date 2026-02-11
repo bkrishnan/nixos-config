@@ -82,7 +82,7 @@
   # Nouveau does not use the 'prime' block.
   hardware.nvidia.modesetting.enable = true;
 
-  # 3. Graphics/OpenGL settings (Now 'hardware.graphics' in 24.11)
+  # 3. Graphics/OpenGL settings
   hardware.graphics = {
     enable = true;
     # Required for 32-bit games/apps (like Steam)
@@ -164,14 +164,23 @@
     nitrogen   # Wallpaper manager
     pavucontrol # Audio control
     zfs        # ZFS filesystem tools and utilities
+    
     # Need to verify GPU configurations
     pciutils
     mesa-demos  # Previously glxinfo
     libva-utils
-    alacritty
+    
     # Hyprland specific
     wofi        # Wayland-native app launcher
     waybar      # Status bar
+    
+    # GPU Monitors
+    nvtopPackages.full # The "all-in-one" monitor (NVIDIA)
+    intel-gpu-tools    # Intel iGPU
+    
+    # Terminals
+    alacritty
+    foot        # The wayland-native "speed king" terminal
   ];
 
   environment.sessionVariables = {
@@ -179,7 +188,10 @@
     # and the NVIDIA card (card1) to simply display it.
     AQ_DRM_DEVICES = "/dev/dri/card0:/dev/dri/card1";
 
-    # 2. Wayland-specific app fixes
+    # 2. Forces Chrome/Firefox to use the Intel driver for video
+    LIBVA_DRIVER_NAME = "i915";
+
+    # 3. Wayland-specific app fixes
     NIXOS_OZONE_WL = "1";
     MOZ_ENALBE_WAYLAND = "1";
     SDL_VIDEODRIVER = "wayland";
