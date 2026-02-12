@@ -6,7 +6,10 @@
 
     settings = {
       # ── Monitors ──────────────────────────────────────────────
-      monitor = ", preferred, auto, auto";
+      monitor = [
+        "DP-1, 2560x1440, 1920x0, 1"
+        "DP-2, 1920x1080, 0x180, 1"
+      ];
 
       # ── Default programs ──────────────────────────────────────
       "$terminal" = "foot";
