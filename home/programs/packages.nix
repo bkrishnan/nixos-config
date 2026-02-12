@@ -19,5 +19,6 @@
     networkmanagerapplet
     pavucontrol
     feh
+    nitrogen
   ];
 }

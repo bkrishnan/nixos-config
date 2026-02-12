@@ -153,16 +153,12 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    i3blocks   # Status bar for i3
     dmenu      # Application launcher
-    feh        # Lightweight image viewer (can set wallpapers)
     rofi       # Alternative application launcher
     picom      # Compositor for transparency and shadows
     xorg.xrandr # Screen resolution utility
     arandr     # Graphical display configuration tool
     lxappearance # GTK theme switcher
-    nitrogen   # Wallpaper manager
-    pavucontrol # Audio control
     zfs        # ZFS filesystem tools and utilities
     
     # Need to verify GPU configurations
