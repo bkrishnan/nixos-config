@@ -13,6 +13,8 @@
           eamodio.gitlens
         ];
         userSettings = {
+          "editor.tabSize" = 2;
+          "editor.insertSpaces" = true;
           "workbench.colorTheme" = "Solarized Light";
           "github.copilot.nextEditSuggestions.enabled" = true;
           "gitlens.ai.modal" = "vscode";

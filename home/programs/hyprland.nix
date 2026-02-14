@@ -144,6 +144,7 @@
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
         "$mainMod, F, fullscreen, 1"
+        "$mainMod SHIFT, X, exec, hyprlock"
 
         # Move focus
         "$mainMod, left,  movefocus, l"

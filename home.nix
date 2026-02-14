@@ -10,6 +10,8 @@
     ./home/programs/i3blocks.nix
     ./home/programs/foot.nix
     ./home/programs/hyprland.nix
+    ./home/programs/hyprlock.nix
+    ./home/programs/hypridle.nix
     ./home/programs/waybar.nix
   ];
 
