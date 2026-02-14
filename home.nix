@@ -10,6 +10,7 @@
     ./home/programs/i3blocks.nix
     ./home/programs/foot.nix
     ./home/programs/hyprland.nix
+    ./home/programs/waybar.nix
   ];
 
   home.stateVersion = "25.11";

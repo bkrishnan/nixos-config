@@ -10,10 +10,12 @@
           ms-python.python
           golang.go
           rust-lang.rust-analyzer
+          eamodio.gitlens
         ];
         userSettings = {
           "workbench.colorTheme" = "Solarized Light";
           "github.copilot.nextEditSuggestions.enabled" = true;
+          "gitlens.ai.modal" = "vscode";
         };
       };
     };

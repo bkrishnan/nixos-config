@@ -11,6 +11,11 @@
         "DP-2, 1920x1080, 0x180, 1"
       ];
 
+      # ── Autostart ─────────────────────────────────────────────
+      exec-once = [
+        "waybar &"
+      ];
+
       # ── Default programs ──────────────────────────────────────
       "$terminal" = "foot";
       "$fileManager" = "dolphin";
@@ -131,19 +136,26 @@
       bind = [
         # Core
         "$mainMod, Return, exec, $terminal"
-        "$mainMod, C, killactive,"
+        "$mainMod SHIFT, Q, killactive,"
         "$mainMod, M, exit,"
         "$mainMod, E, exec, $fileManager"
         "$mainMod, V, togglefloating,"
         "$mainMod, D, exec, $menu"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
+        "$mainMod, F, fullscreen, 1"
 
         # Move focus
         "$mainMod, left,  movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up,    movefocus, u"
         "$mainMod, down,  movefocus, d"
+
+        # Move windows
+        "$mainMod SHIFT, left,  movewindow, l"
+        "$mainMod SHIFT, right, movewindow, r"
+        "$mainMod SHIFT, up,    movewindow, u"
+        "$mainMod SHIFT, down,  movewindow, d"
 
         # Switch workspaces
         "$mainMod, 1, workspace, 1"

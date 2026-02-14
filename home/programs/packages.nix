@@ -20,5 +20,6 @@
     pavucontrol
     feh
     nitrogen
+    zenity
   ];
 }
