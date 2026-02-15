@@ -87,15 +87,46 @@ sudo nixos-rebuild switch --flake .#imac
 #### Home Manager Structure
 
 - **`home.nix`** - Main Home Manager configuration file for user `bkrishnan`
-- **`home/programs/`** - Directory containing modular program configurations:
+- **`home/programs/`** - Directory containing modular Nix declarations for each program:
+  - **`emacs.nix`** - Emacs with declarative package management via `emacsWithPackages`
   - **`i3.nix`** - i3-gaps window manager configuration with keybindings, workspaces, and startup commands
   - **`fish.nix`** - Fish shell configuration and aliases
   - **`git.nix`** - Git configuration (username, email, credentials)
   - **`vscode.nix`** - VS Code extensions and user settings
   - **`packages.nix`** - User-level package management
+- **`config/`** - Raw configuration files (non-Nix) sourced by Home Manager modules:
+  - **`config/emacs/init.el`** - Emacs Lisp configuration (use-package declarations, Org-mode setup, etc.)
+  - Other program configs follow the same pattern as needed
+
+#### Hybrid Configuration Approach
+
+This repository uses a **hybrid Nix + static config files** approach for program configuration:
+
+**Declarative (Nix) Layer:**
+- Package installation and version pinning
+- Simple settings and options (e.g., theme selection, keybindings)
+- Per-program Nix modules in `home/programs/`
+
+**Static Config Files Layer:**
+- Complex, multi-line configurations (Org-mode capture templates, custom functions)
+- Code written in the program's native language (Emacs Lisp, shell scripts, etc.)
+- Stored in `config/<program>/` subdirectories
+- Sourced by Home Manager modules via the `home.file` option
+
+Example: **Emacs Configuration**
+- `home/programs/emacs.nix` — Declares `emacsWithPackages` to pre-load all packages (vertico, org, denote, ef-themes, etc.) via Nix
+- `config/emacs/init.el` — Contains Emacs Lisp configuration (use-package declarations, Org GTD setup, Denote bindings)
+- The `.nix` file sources `init.el` via Home Manager: `home.file.".emacs.d/init.el".source = ../../config/emacs/init.el`
+
+**Benefits:**
+- Packages are pinned by Nix flakes, ensuring reproducibility
+- Complex configurations stay readable in their native language
+- Easy to version-control both declarative and static configs
+- Scales well: just create a new `config/<program>/` folder as you add programs
 
 #### Key Home Manager Features in This Config
 
+- **Emacs** with declarative packages (vertico, marginalia, orderless, org, org-roam, denote, ef-themes) and custom Emacs Lisp configuration
 - **i3-gaps setup** with custom keybindings (Super+D for app launcher, Super+Enter for terminal)
 - **Alacritty terminal** configuration for X11/Wayland
 - **Fish shell** setup with custom functions and environment variables

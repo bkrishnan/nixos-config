@@ -15,6 +15,7 @@
     ./home/programs/hypridle.nix
     ./home/programs/waybar.nix
     ./home/programs/direnv.nix
+    ./home/programs/emacs.nix
   ];
 
   home.stateVersion = "25.11";

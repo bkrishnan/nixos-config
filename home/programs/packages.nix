@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
     git
     vim
-    emacs
     fish
     curl
     wget
