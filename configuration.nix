@@ -214,6 +214,9 @@
   # Enable Direnv
   programs.direnv.enable = true;
 
+  # Allow non-Nix binaries to be run gracefully (Eg. Shopify's javy)
+  programs.nix-ld.enable = true;
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
