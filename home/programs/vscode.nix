@@ -18,6 +18,7 @@
           "workbench.colorTheme" = "Solarized Light";
           "github.copilot.nextEditSuggestions.enabled" = true;
           "gitlens.ai.modal" = "vscode";
+          "git.confirmSync" = false;
         };
       };
     };
