@@ -23,5 +23,6 @@
     swaynotificationcenter
     libnotify
     satty
+    libreoffice
   ];
 }
