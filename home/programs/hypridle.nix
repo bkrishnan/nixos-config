@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   services.hypridle = {
@@ -21,6 +21,15 @@
           on-resume = "hyprctl dispatch dpms on";
         }
       ];
+    };
+  };
+
+  # Fix for WAYLAND_DISPLAY not being set during systemd service startup
+  # See: https://github.com/nix-community/home-manager/issues/5899
+  systemd.user.services.hypridle = {
+    Unit = {
+      After = lib.mkForce "graphical-session.target";
+      ConditionEnvironment = lib.mkForce "";
     };
   };
 }

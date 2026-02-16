@@ -5,10 +5,7 @@
     enable = true;
     settings = {
       general = {
-        disable_loading_bar = true;
-        grace = 300; # time in seconds before asking for password
         hide_cursor = true;
-        no_fade_in = false;
       };
 
       background = [
