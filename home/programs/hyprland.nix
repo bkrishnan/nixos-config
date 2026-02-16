@@ -189,6 +189,13 @@
         # Scroll through workspaces
         "$mainMod, mouse_down, workspace, e+1"
         "$mainMod, mouse_up, workspace, e-1"
+
+        # Screenshot a region
+        ", Print, exec, hyprshot -m region --raw | GSK_RENDERER=cairo satty --filename -"
+        # Screenshot a window
+        "SHIFT, Print, exec, hyprshot -m window --raw | GSK_RENDERER=cairo satty --filename -"
+        # Screenshot a monitor
+        "ALT, Print, exec, hyprshot -m output --raw | GSK_RENDERER=cairo satty --filename -"
       ];
 
       # Move/resize with mouse

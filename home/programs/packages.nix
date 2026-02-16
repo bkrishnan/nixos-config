@@ -20,5 +20,8 @@
     feh
     nitrogen
     zenity
+    swaynotificationcenter
+    libnotify
+    satty
   ];
 }

@@ -16,6 +16,9 @@
     ./home/programs/waybar.nix
     ./home/programs/direnv.nix
     ./home/programs/emacs.nix
+    ./home/programs/swaync.nix
+    ./home/programs/hyprshot.nix
+    ./home/programs/satty.nix
   ];
 
   home.stateVersion = "25.11";
