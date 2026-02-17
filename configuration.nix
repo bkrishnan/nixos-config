@@ -99,7 +99,22 @@
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
+  
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "Brother_HL-L2300D";
+        location = "Loft";
+        deviceUri = "ipp://ubuntu/printers/Brother_HL-L2300D_series";
+        model = "drv:///sample.drv/generic.ppd";
+        ppdOptions = {
+          PageSize = "A4";
+        };
+      }
+    ];
+    ensureDefaultPrinter = "Brother_HL-L2300D";
+  };
 
   # Enable sound.
   # services.pulseaudio.enable = true;
@@ -116,7 +131,7 @@
   users.users.bkrishnan = {
     isNormalUser = true;
     description = "Bharath Krishnan";
-    extraGroups = [ "networkmanager"  "wheel" "video" ];
+    extraGroups = [ "networkmanager"  "wheel" "video" "scanner" "lp" ];
     createHome = true;
   };
 
@@ -177,6 +192,7 @@
     # Terminals
     alacritty
     foot        # The wayland-native "speed king" terminal
+    brscan3
   ];
 
   environment.sessionVariables = {
@@ -229,6 +245,10 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+
+  services.tailscale = {
+    enable = true;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
