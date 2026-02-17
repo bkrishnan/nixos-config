@@ -44,6 +44,14 @@ The system is tuned to distribute tasks across all available silicon:
 - **Terminal:** Alacritty & Foot (GPU-accelerated, Wayland-native)
 - **Monitoring:** nvtopPackages.full, intel-gpu-tools
 
+## 🖨️ External Devices
+
+### Brother HL-L2300D Printer
+Network IPP printer shared from another machine. See [docs/devices/brother-printer.md](./docs/devices/brother-printer.md) for setup details.
+
+### Brother MFC-J410W Scanner
+Network scanner working via brscan4 driver. See [docs/devices/brother-scanner.md](./docs/devices/brother-scanner.md) for setup details.
+
 ## 🏗️ Configuration Structure
 
 ### NixOS Configuration

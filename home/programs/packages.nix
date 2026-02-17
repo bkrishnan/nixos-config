@@ -25,5 +25,6 @@
     satty
     libreoffice
     fastfetch
+    simple-scan
   ];
 }

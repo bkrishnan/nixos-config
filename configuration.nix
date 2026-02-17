@@ -116,6 +116,21 @@
     ensureDefaultPrinter = "Brother_HL-L2300D";
   };
 
+  # Brother MFC-J410W Scanner
+  # Uses brscan4 driver (not brscan3, despite being an older model)
+  hardware.sane = {
+    enable = true;
+    brscan4 = {
+      enable = true;
+      netDevices = {
+        home = {
+          model = "MFC-J410W";
+          nodename = "BRW00225857670B";
+        };
+      };
+    };
+  };
+
   # Enable sound.
   # services.pulseaudio.enable = true;
   # OR
@@ -192,7 +207,6 @@
     # Terminals
     alacritty
     foot        # The wayland-native "speed king" terminal
-    brscan3
   ];
 
   environment.sessionVariables = {
