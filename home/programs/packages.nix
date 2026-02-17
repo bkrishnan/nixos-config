@@ -24,5 +24,6 @@
     libnotify
     satty
     libreoffice
+    fastfetch
   ];
 }

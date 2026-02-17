@@ -143,7 +143,7 @@
         "$mainMod, D, exec, $menu"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
-        "$mainMod, F, fullscreen, 1"
+        "$mainMod, F, fullscreen, 0"
         "$mainMod SHIFT, X, exec, hyprlock"
 
         # Move focus

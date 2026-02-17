@@ -3,6 +3,14 @@
 {
   programs.fish = {
     enable = true;
+
+    interactiveShellInit = ''
+      fastfetch
+    '';
+
+    shellAliases = {
+      fetch = "fastfetch";
+    };
     
     functions = {
       nr = {
