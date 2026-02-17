@@ -1,14 +1,16 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -20,17 +22,16 @@
   ];
 
   # ZFS filesystem support
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = ["zfs"];
   boot.zfs.package = pkgs.zfs;
   services.zfs.trim.enable = true;
 
   zramSwap = {
     enable = true;
-    algorithm = "zstd";       # Highly recommended for a balance of speed and compression
-    memoryPercent = 60;      # Percentage of total RAM to use for zram
-    priority = 10;           # Set higher than disk swap priority (if any)
+    algorithm = "zstd"; # Highly recommended for a balance of speed and compression
+    memoryPercent = 60; # Percentage of total RAM to use for zram
+    priority = 10; # Set higher than disk swap priority (if any)
   };
-
 
   networking.hostName = "imac";
   networking.hostId = "8425e349";
@@ -76,7 +77,7 @@
   };
 
   # 1. Enable open source NVIDIA drivers instead of proprietary 470 to play nice with Wayland
-  services.xserver.videoDrivers = [ "nouveau" ];
+  services.xserver.videoDrivers = ["nouveau"];
 
   # 2. Configure NVIDIA settings
   # Nouveau does not use the 'prime' block.
@@ -88,9 +89,9 @@
     # Required for 32-bit games/apps (like Steam)
     enable32Bit = true;
     extraPackages = with pkgs; [
-      intel-vaapi-driver   # Modern VA-API driver for Intel
-      libvdpau-va-gl       # Bridge for apps that only speak VDPAU (common in older apps)
-      mesa                 # Essential for the Nouveau driver
+      intel-vaapi-driver # Modern VA-API driver for Intel
+      libvdpau-va-gl # Bridge for apps that only speak VDPAU (common in older apps)
+      mesa # Essential for the Nouveau driver
     ];
   };
 
@@ -100,7 +101,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  
+
   hardware.printers = {
     ensurePrinters = [
       {
@@ -146,7 +147,7 @@
   users.users.bkrishnan = {
     isNormalUser = true;
     description = "Bharath Krishnan";
-    extraGroups = [ "networkmanager"  "wheel" "video" "scanner" "lp" ];
+    extraGroups = ["networkmanager" "wheel" "video" "scanner" "lp"];
     createHome = true;
   };
 
@@ -156,7 +157,7 @@
 
   security.sudo.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Home Manager configuration
   home-manager.backupFileExtension = "backup";
@@ -166,47 +167,47 @@
     allowUnfree = true;
     nvidia.acceptLicense = true;
     # Use a predicate so you don't have to update the version string manually
-    allowInsecurePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "broadcom-sta"
-    ];
+    allowInsecurePredicate = pkg:
+      builtins.elem (lib.getName pkg) [
+        "broadcom-sta"
+      ];
   };
 
   # Boot with Broadcom and Intel drivers
-  boot.initrd.kernelModules = [ "wl" "i915"];
-  boot.kernelModules = [ "wl" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
+  boot.initrd.kernelModules = ["wl" "i915"];
+  boot.kernelModules = ["wl"];
+  boot.extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
 
   # Optional: Blacklist conflicting open-source drivers
-  boot.blacklistedKernelModules = [ "b43" "bcma" "brcmsmac" "ssb" "nvidia" "nvidia_drm" "nvidia_modeset"];
-
+  boot.blacklistedKernelModules = ["b43" "bcma" "brcmsmac" "ssb" "nvidia" "nvidia_drm" "nvidia_modeset"];
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    dmenu      # Application launcher
-    rofi       # Alternative application launcher
-    picom      # Compositor for transparency and shadows
+    dmenu # Application launcher
+    rofi # Alternative application launcher
+    picom # Compositor for transparency and shadows
     xorg.xrandr # Screen resolution utility
-    arandr     # Graphical display configuration tool
+    arandr # Graphical display configuration tool
     lxappearance # GTK theme switcher
-    zfs        # ZFS filesystem tools and utilities
-    
+    zfs # ZFS filesystem tools and utilities
+
     # Need to verify GPU configurations
     pciutils
-    mesa-demos  # Previously glxinfo
+    mesa-demos # Previously glxinfo
     libva-utils
-    
+
     # Hyprland specific
-    wofi        # Wayland-native app launcher
-    waybar      # Status bar
-    
+    wofi # Wayland-native app launcher
+    waybar # Status bar
+
     # GPU Monitors
     nvtopPackages.full # The "all-in-one" monitor (NVIDIA)
-    intel-gpu-tools    # Intel iGPU
-    
+    intel-gpu-tools # Intel iGPU
+
     # Terminals
     alacritty
-    foot        # The wayland-native "speed king" terminal
+    foot # The wayland-native "speed king" terminal
   ];
 
   environment.sessionVariables = {
@@ -293,6 +294,4 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
-
 }
-

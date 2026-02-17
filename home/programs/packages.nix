@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     git
     vim
@@ -26,5 +24,7 @@
     libreoffice
     fastfetch
     simple-scan
+    # Nix tooling
+    alejandra
   ];
 }
