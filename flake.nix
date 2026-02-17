@@ -1,5 +1,5 @@
 {
-  description = "iMac 2012 NixOS Configuration";
+  description = "bkrishnan — NixOS flake (multi-host, Home Manager integrated)";
 
   inputs = {
     # This locks your system to the 25.11 stable channel
@@ -10,11 +10,17 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    # 'nixos' must match your hostname in configuration.nix
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: {
+    # Each host maps to nixosConfigurations.<hostname>.
+    # Add a new host by duplicating this block and pointing at hosts/<hostname>/hardware.nix.
     nixosConfigurations.imac = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      specialArgs = {inherit inputs;};
       modules = [
         ./configuration.nix
         home-manager.nixosModules.home-manager

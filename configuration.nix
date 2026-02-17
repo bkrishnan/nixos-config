@@ -1,24 +1,18 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+# System-level NixOS configuration.
+# Machine-specific hardware tweaks live in hosts/<hostname>/hardware.nix.
+# Per-device configs live in devices/*.nix.
+# Help: configuration.nix(5), https://search.nixos.org/options, `nixos-help`
+{pkgs, ...}: {
   imports = [
-    # Include the results of the hardware scan.
+    # Auto-generated hardware scan — do not edit
     ./hardware-configuration.nix
-  ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    # iMac-specific: GPU drivers, Broadcom Wi-Fi, ZFS, kernel params
+    ./hosts/imac/hardware.nix
 
-  boot.kernelParams = [
-    "nouveau.config=NvBoost=1"
-    "nouveau.modeset=1"
+    # External devices
+    ./devices/brother-printer.nix
+    ./devices/brother-scanner.nix
   ];
 
   # ZFS filesystem support
@@ -26,6 +20,7 @@
   boot.zfs.package = pkgs.zfs;
   services.zfs.trim.enable = true;
 
+  # zram swap — compressed in-memory swap, faster than disk and reduces writes
   zramSwap = {
     enable = true;
     algorithm = "zstd"; # Highly recommended for a balance of speed and compression
@@ -34,7 +29,6 @@
   };
 
   networking.hostName = "imac";
-  networking.hostId = "8425e349";
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
@@ -76,61 +70,9 @@
     package = pkgs.i3;
   };
 
-  # 1. Enable open source NVIDIA drivers instead of proprietary 470 to play nice with Wayland
-  services.xserver.videoDrivers = ["nouveau"];
-
-  # 2. Configure NVIDIA settings
-  # Nouveau does not use the 'prime' block.
-  hardware.nvidia.modesetting.enable = true;
-
-  # 3. Graphics/OpenGL settings
-  hardware.graphics = {
-    enable = true;
-    # Required for 32-bit games/apps (like Steam)
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      intel-vaapi-driver # Modern VA-API driver for Intel
-      libvdpau-va-gl # Bridge for apps that only speak VDPAU (common in older apps)
-      mesa # Essential for the Nouveau driver
-    ];
-  };
-
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  hardware.printers = {
-    ensurePrinters = [
-      {
-        name = "Brother_HL-L2300D";
-        location = "Loft";
-        deviceUri = "ipp://ubuntu/printers/Brother_HL-L2300D_series";
-        model = "drv:///sample.drv/generic.ppd";
-        ppdOptions = {
-          PageSize = "A4";
-        };
-      }
-    ];
-    ensureDefaultPrinter = "Brother_HL-L2300D";
-  };
-
-  # Brother MFC-J410W Scanner
-  # Uses brscan4 driver (not brscan3, despite being an older model)
-  hardware.sane = {
-    enable = true;
-    brscan4 = {
-      enable = true;
-      netDevices = {
-        home = {
-          model = "MFC-J410W";
-          nodename = "BRW00225857670B";
-        };
-      };
-    };
-  };
 
   # Enable sound.
   # services.pulseaudio.enable = true;
@@ -162,69 +104,32 @@
   # Home Manager configuration
   home-manager.backupFileExtension = "backup";
 
-  # Allow proprietary drivers
   nixpkgs.config = {
     allowUnfree = true;
     nvidia.acceptLicense = true;
-    # Use a predicate so you don't have to update the version string manually
-    allowInsecurePredicate = pkg:
-      builtins.elem (lib.getName pkg) [
-        "broadcom-sta"
-      ];
   };
-
-  # Boot with Broadcom and Intel drivers
-  boot.initrd.kernelModules = ["wl" "i915"];
-  boot.kernelModules = ["wl"];
-  boot.extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
-
-  # Optional: Blacklist conflicting open-source drivers
-  boot.blacklistedKernelModules = ["b43" "bcma" "brcmsmac" "ssb" "nvidia" "nvidia_drm" "nvidia_modeset"];
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    dmenu # Application launcher
+    zfs # ZFS CLI tools (zpool, zfs, etc.)
+
+    # Desktop / X11 tools
+    dmenu # Application launcher (i3)
     rofi # Alternative application launcher
     picom # Compositor for transparency and shadows
     xorg.xrandr # Screen resolution utility
     arandr # Graphical display configuration tool
     lxappearance # GTK theme switcher
-    zfs # ZFS filesystem tools and utilities
 
-    # Need to verify GPU configurations
-    pciutils
-    mesa-demos # Previously glxinfo
-    libva-utils
-
-    # Hyprland specific
-    wofi # Wayland-native app launcher
+    # Wayland / Hyprland tools
+    wofi # App launcher
     waybar # Status bar
-
-    # GPU Monitors
-    nvtopPackages.full # The "all-in-one" monitor (NVIDIA)
-    intel-gpu-tools # Intel iGPU
 
     # Terminals
     alacritty
-    foot # The wayland-native "speed king" terminal
+    foot # Wayland-native terminal
   ];
-
-  environment.sessionVariables = {
-    # 1. Force the Intel chip (card0) to render the desktop
-    # and the NVIDIA card (card1) to simply display it.
-    AQ_DRM_DEVICES = "/dev/dri/card0:/dev/dri/card1";
-
-    # 2. Forces Chrome/Firefox to use the Intel driver for video
-    LIBVA_DRIVER_NAME = "i915";
-
-    # 3. Wayland-specific app fixes
-    NIXOS_OZONE_WL = "1";
-    MOZ_ENALBE_WAYLAND = "1";
-    SDL_VIDEODRIVER = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    CLUTTER_BACKEND = "wayland";
-  };
 
   programs.hyprland.enable = true;
 
