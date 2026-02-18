@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   programs.git = {
     enable = true;
     settings = {
@@ -11,6 +9,9 @@
       init = {
         defaultBranch = "main";
       };
+    };
+    extraConfig = {
+      alias.lg = "log --color --graph --pretty=format:'%C(red)%h%C(reset) -%C(yellow)%d%C(reset) %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)' --abbrev-commit --date=relative";
     };
   };
 }
