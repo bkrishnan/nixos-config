@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     ./home/programs/packages.nix
     ./home/programs/git.nix
@@ -19,10 +21,11 @@
     ./home/programs/swaync.nix
     ./home/programs/hyprshot.nix
     ./home/programs/satty.nix
+    ./home/programs/cursor.nix
   ];
 
   home.stateVersion = "25.11";
-  
+
   home.username = "bkrishnan";
   home.homeDirectory = "/home/bkrishnan";
 

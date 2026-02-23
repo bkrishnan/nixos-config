@@ -12,6 +12,10 @@
       # ── Autostart ─────────────────────────────────────────────
       exec-once = [
         "waybar &"
+        # Apply Bibata cursor to the Hyprland compositor itself and GTK apps
+        "hyprctl setcursor Bibata-Modern-Classic 24"
+        "gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Classic'"
+        "gsettings set org.gnome.desktop.interface cursor-size 24"
       ];
 
       # ── Default programs ──────────────────────────────────────
@@ -21,11 +25,18 @@
       "$menu" = "wofi --show drun";
       "$mainMod" = "SUPER";
 
-      # ── Environment variables ─────────────────────────────────
+      # ── Environment variables ─────────────────────────────────────────
       env = [
+        "XCURSOR_THEME, Bibata-Modern-Classic"
         "XCURSOR_SIZE, 24"
         "HYPRCURSOR_SIZE, 24"
       ];
+
+      # ── Cursor ────────────────────────────────────────────────────────────
+      # no_hardware_cursors fixes cursor disappearing on Nouveau/NVIDIA GPUs
+      cursor = {
+        no_hardware_cursors = true;
+      };
 
       # ── General ───────────────────────────────────────────────
       general = {
