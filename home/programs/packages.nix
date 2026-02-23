@@ -26,5 +26,10 @@
     simple-scan
     # Nix tooling
     alejandra
+    # Desktop publishing
+    xournalpp
+    ghostscript
+    imagemagick
+    kdePackages.kruler
   ];
 }

@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   wayland.windowManager.hyprland = {
     enable = true;
 
@@ -141,9 +139,10 @@
         "$mainMod, E, exec, $fileManager"
         "$mainMod, V, togglefloating,"
         "$mainMod, D, exec, $menu"
+        "$mainMod, R, exec, kruler"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
-        "$mainMod, F, fullscreen, 0"
+        "$mainMod, F, fullscreen, 1"
         "$mainMod SHIFT, X, exec, hyprlock"
 
         # Move focus
@@ -226,6 +225,10 @@
       windowrule = [
         "suppressevent maximize, class:.*"
         "nofocus, class:^$, title:^$, xwayland:1, floating:1, fullscreen:0, pinned:0"
+      ];
+
+      windowrulev2 = [
+        "float, class:(org.kde.kruler)"
       ];
     };
   };

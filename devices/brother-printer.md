@@ -2,22 +2,29 @@
 
 ## Configuration
 
-The Brother HL-L2300D laser printer is configured as a network IPP (Internet Printing Protocol) printer, shared from another machine on the network.
+The Brother HL-L2300D laser printer is configured as a network IPP (Internet Printing Protocol) printer, shared from another machine on the network. It uses Avahi (mDNS) for local hostname resolution to enable proper configuration overrides.
 
-Add this to `configuration.nix`:
+The configuration is in `devices/brother-printer.nix`:
 
 ```nix
 services.printing.enable = true;
+services.printing.browsed.enable = false;
+
+services.avahi = {
+  enable = true;
+  nssmdns4 = true;
+  openFirewall = true;
+};
 
 hardware.printers = {
   ensurePrinters = [
     {
       name = "Brother_HL-L2300D";
       location = "Loft";
-      deviceUri = "ipp://ubuntu/printers/Brother_HL-L2300D_series";
+      deviceUri = "ipp://ubuntu.local/printers/Brother_HL-L2300D_series";
       model = "drv:///sample.drv/generic.ppd";
       ppdOptions = {
-        PageSize = "A4";
+        PageSize = "Letter";
       };
     }
   ];
@@ -27,23 +34,34 @@ hardware.printers = {
 
 ## How It Works
 
+### Avahi/mDNS for Hostname Resolution
+
+The configuration uses Avahi to enable mDNS (Multicast DNS) support, which allows the NixOS machine to resolve `.local` hostnames on the local network. This is important for printer configuration because:
+
+- **`services.avahi.enable = true`**: Enables mDNS responder
+- **`services.avahi.nssmdns4 = true`**: Integrates mDNS with the system's hostname resolver
+- **`services.avahi.openFirewall = true`**: Allows mDNS traffic through the firewall
+- **`services.printing.browsed.enable = false`**: Disables CUPS browsing to prevent configuration conflicts with the print server
+
+The `.local` hostname (`ubuntu.local`) allows the printer's PPD options to be properly applied locally, overriding any defaults set on the print server (such as single vs. double-sided printing).
+
 ### Network Printing via IPP
 
 The printer is physically connected to a machine named `ubuntu` on your local network, which shares it via CUPS (Common Unix Printing System) using the IPP protocol.
 
 **Key configuration elements:**
 
-- **`deviceUri`**: `ipp://ubuntu/printers/Brother_HL-L2300D_series`
-  - Points to the CUPS server on the `ubuntu` machine
+- **`deviceUri`**: `ipp://ubuntu.local/printers/Brother_HL-L2300D_series`
+  - Points to the CUPS server on the `ubuntu` machine using mDNS hostname resolution
   - Uses standard IPP protocol (port 631)
   
 - **`model`**: `drv:///sample.drv/generic.ppd`
   - Uses the generic PostScript printer driver
   - Works for most modern laser printers that support PostScript
   
-- **`ppdOptions.PageSize`**: `"A4"`
-  - Sets default paper size to A4 (European standard)
-  - Change to `"Letter"` if you use US Letter size
+- **`ppdOptions.PageSize`**: `"Letter"`
+  - Sets default paper size to Letter (US standard)
+  - Change to `"A4"` if you use European A4 size
 
 ### Declarative Printer Management
 
@@ -101,10 +119,10 @@ sudo systemctl restart cups
 
 ### Change paper size
 
-Edit `configuration.nix` and change the `PageSize` option:
+Edit `devices/brother-printer.nix` and change the `PageSize` option:
 ```nix
 ppdOptions = {
-  PageSize = "Letter";  # or "A4", "Legal", etc.
+  PageSize = "A4";  # or "Letter", "Legal", etc.
 };
 ```
 
