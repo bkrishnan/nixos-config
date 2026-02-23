@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   programs.vscode = {
     enable = true;
     profiles = {
@@ -22,6 +20,9 @@
           "gitlens.ai.modal" = "vscode";
           "git.confirmSync" = false;
           "nix.formatterPath" = "alejandra";
+          "chat.tools.terminal.autoApprove" = {
+            "journalctl" = true;
+          };
         };
       };
     };
