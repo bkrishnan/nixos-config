@@ -143,7 +143,10 @@
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
         "$mainMod, F, fullscreen, 1"
-        "$mainMod SHIFT, X, exec, hyprlock"
+        # Lock the session. forceidle 320 advances idle timers past 300 s so
+        # hypridle's 330 s listener fires ~10 s later, blanking the screen and
+        # arming on-resume (so mouse/key wakes the display back to hyprlock).
+        "$mainMod SHIFT, X, exec, loginctl lock-session && sleep 0.5 && hyprctl dispatch forceidle 320"
 
         # Move focus
         "$mainMod, left,  movefocus, l"
