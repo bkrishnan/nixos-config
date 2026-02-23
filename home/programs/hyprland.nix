@@ -16,7 +16,8 @@
 
       # ── Default programs ──────────────────────────────────────
       "$terminal" = "foot";
-      "$fileManager" = "dolphin";
+      "$fileManager" = "nautilus";
+      "$browser" = "google-chrome-stable";
       "$menu" = "wofi --show drun";
       "$mainMod" = "SUPER";
 
@@ -137,6 +138,7 @@
         "$mainMod SHIFT, Q, killactive,"
         "$mainMod, M, exit,"
         "$mainMod, E, exec, $fileManager"
+        "$mainMod, Z, exec, $browser"
         "$mainMod, V, togglefloating,"
         "$mainMod, D, exec, $menu"
         "$mainMod, R, exec, kruler"
