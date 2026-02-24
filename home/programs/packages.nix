@@ -31,5 +31,6 @@
     ghostscript
     imagemagick
     kdePackages.kruler
+    wl-clipboard
   ];
 }

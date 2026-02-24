@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
     satty
   ];
@@ -10,9 +12,12 @@
     text = ''
       [general]
       output-filename = "Pictures/Screenshots/%Y-%m-%d_%H-%M-%S.png"
-      copy-command = "wl-copy"
-      initial-tool = "brush"
+      copy-command = "${pkgs.wl-clipboard}/bin/wl-copy"
+      initial-tool = "arrow"
+      annotation-size-factor = 0.5
       actions-on-enter = ["save-to-clipboard", "save-to-file"]
+      early-exit = true
+      default-hide-toolbars = true
     '';
   };
 

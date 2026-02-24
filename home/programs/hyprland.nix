@@ -245,6 +245,8 @@
 
       windowrulev2 = [
         "float, class:(org.kde.kruler)"
+        "float, class:(com.gabm.satty)"
+        "center, class:(com.gabm.satty)"
       ];
     };
   };
