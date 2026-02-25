@@ -22,6 +22,7 @@
     ./home/programs/hyprshot.nix
     ./home/programs/satty.nix
     ./home/programs/cursor.nix
+    ./home/programs/rofi.nix
   ];
 
   home.stateVersion = "25.11";

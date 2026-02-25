@@ -22,7 +22,7 @@
       "$terminal" = "foot";
       "$fileManager" = "nautilus";
       "$browser" = "google-chrome-stable";
-      "$menu" = "wofi --show drun";
+      "$menu" = "rofi -show drun";
       "$mainMod" = "SUPER";
 
       # ── Environment variables ─────────────────────────────────────────
@@ -152,6 +152,8 @@
         "$mainMod, Z, exec, $browser"
         "$mainMod, V, togglefloating,"
         "$mainMod, D, exec, $menu"
+        "$mainMod, Tab, exec, rofi -show window"
+        "$mainMod, C, exec, rofi -show calc -no-show-match -no-sort"
         "$mainMod, R, exec, kruler"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
