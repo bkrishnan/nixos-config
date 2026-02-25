@@ -153,7 +153,7 @@
         "$mainMod, V, togglefloating,"
         "$mainMod, D, exec, $menu"
         "$mainMod, Tab, exec, rofi -show window"
-        "$mainMod, C, exec, rofi -show calc -no-show-match -no-sort"
+        "$mainMod, C, exec, gnome-calculator"
         "$mainMod, R, exec, kruler"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
@@ -247,6 +247,8 @@
 
       windowrulev2 = [
         "float, class:(org.kde.kruler)"
+        "float, class:(org.gnome.Calculator)"
+        "center, class:(org.gnome.Calculator)"
         "float, class:(com.gabm.satty)"
         "center, class:(com.gabm.satty)"
       ];
