@@ -22,6 +22,16 @@
           "gitlens.ai.modal" = "vscode";
           "git.confirmSync" = false;
           "nix.formatterPath" = "alejandra";
+          "json.schemaDownload.trustedDomains" = {
+            "https://schemastore.azurewebsites.net/" = true;
+            "https://raw.githubusercontent.com/microsoft/vscode/" = true;
+            "https://raw.githubusercontent.com/devcontainers/spec/" = true;
+            "https://www.schemastore.org/" = true;
+            "https://json.schemastore.org/" = true;
+            "https://json-schema.org/" = true;
+            "https://developer.microsoft.com/json-schemas/" = true;
+            "https://biomejs.dev" = true;
+          };
           "chat.tools.terminal.autoApprove" = {
             "journalctl" = true;
           };
