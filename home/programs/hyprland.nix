@@ -241,16 +241,14 @@
 
       # ── Window rules ──────────────────────────────────────────
       windowrule = [
-        "suppressevent maximize, class:.*"
-        "nofocus, class:^$, title:^$, xwayland:1, floating:1, fullscreen:0, pinned:0"
-      ];
-
-      windowrulev2 = [
-        "float, class:(org.kde.kruler)"
-        "float, class:(org.gnome.Calculator)"
-        "center, class:(org.gnome.Calculator)"
-        "float, class:(com.gabm.satty)"
-        "center, class:(com.gabm.satty)"
+        # Suppress maximize events for all windows
+        "suppress_event maximize, match:class .*"
+        # Prevent phantom XWayland popups (no class/title) from stealing focus
+        "no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0"
+        # App-specific float/center rules
+        "float on, match:class org\\.kde\\.kruler"
+        "float on, center on, match:class org\\.gnome\\.Calculator"
+        "float on, center on, match:class com\\.gabm\\.satty"
       ];
     };
   };

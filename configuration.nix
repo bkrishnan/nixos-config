@@ -117,7 +117,7 @@
     # Desktop / X11 tools
     dmenu # Application launcher (i3)
     picom # Compositor for transparency and shadows
-    xorg.xrandr # Screen resolution utility
+    xrandr # Screen resolution utility
     arandr # Graphical display configuration tool
     lxappearance # GTK theme switcher
 

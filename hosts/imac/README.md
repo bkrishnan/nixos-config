@@ -1,6 +1,6 @@
 # 🖥️ Host: iMac (Late 2012, 13,2)
 
-Hostname: `imac` | Architecture: `x86_64-linux` | NixOS: `25.11`
+Hostname: `imac` | Architecture: `x86_64-linux` | NixOS: `unstable`
 
 ## Hardware
 

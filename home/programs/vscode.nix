@@ -4,6 +4,8 @@
     profiles = {
       default = {
         extensions = with pkgs.vscode-extensions; [
+          github.copilot
+          github.copilot-chat
           ms-vscode.cpptools
           ms-python.python
           golang.go
