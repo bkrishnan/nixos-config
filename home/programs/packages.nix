@@ -32,5 +32,6 @@
     imagemagick
     kdePackages.kruler
     wl-clipboard
+    d2
   ];
 }

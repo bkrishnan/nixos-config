@@ -3,16 +3,23 @@
     enable = true;
     profiles = {
       default = {
-        extensions = with pkgs.vscode-extensions; [
-          github.copilot
-          github.copilot-chat
-          ms-vscode.cpptools
-          ms-python.python
-          golang.go
-          rust-lang.rust-analyzer
-          eamodio.gitlens
-          jnoortheen.nix-ide
-        ];
+        extensions =
+          (with pkgs.vscode-extensions; [
+            eamodio.gitlens
+            jnoortheen.nix-ide
+            biomejs.biome
+            bierner.markdown-mermaid
+          ])
+          ++ [
+            (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+              mktplcRef = {
+                name = "d2";
+                publisher = "terrastruct";
+                version = "0.8.8";
+                sha256 = "sha256-nnljLG2VL7r8bu+xFOTBx5J2UBsdjOwtAzDDXKtK0os=";
+              };
+            })
+          ];
         userSettings = {
           "editor.tabSize" = 2;
           "editor.insertSpaces" = true;
