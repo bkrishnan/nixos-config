@@ -42,6 +42,7 @@
           "chat.tools.terminal.autoApprove" = {
             "journalctl" = true;
           };
+          "biome.suggestInstallingGlobally" = false;
         };
       };
     };
