@@ -33,5 +33,6 @@
     kdePackages.kruler
     wl-clipboard
     d2
+    yaak
   ];
 }
