@@ -158,7 +158,7 @@
 (use-package ef-themes
   :ensure nil
   :config
-  (ef-themes-select 'ef-cyprus))
+  (ef-themes-load-theme 'ef-cyprus))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
