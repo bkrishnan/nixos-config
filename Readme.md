@@ -67,7 +67,7 @@ Home Manager runs as a NixOS module (no separate activation step needed). Progra
 
 | Hostname | Machine | Notes |
 |----------|---------|-------|
-| `imac` | Late 2012 iMac 27-inch | Hybrid Intel/NVIDIA (Nouveau), Broadcom Wi-Fi — [README](./hosts/imac/README.md) |
+| `imac` | Late 2012 iMac 27-inch | Hybrid Intel/NVIDIA (Nouveau), Broadcom Wi-Fi; `rpool/data` (native ZFS encryption) auto-mounted at boot — [README](./hosts/imac/README.md) |
 
 ## External Devices
 
@@ -83,6 +83,7 @@ Home Manager runs as a NixOS module (no separate activation step needed). Progra
 - **Terminals:** Alacritty, Foot
 - **Shell:** Fish
 - **Editor:** Emacs (declarative packages via `emacsWithPackages`), VS Code
+- **Snapshots:** Sanoid (automated ZFS snapshot management, every 15 min)
 
 ## Build & Deploy
 

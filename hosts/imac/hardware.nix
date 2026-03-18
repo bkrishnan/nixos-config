@@ -34,6 +34,22 @@
   # ZFS requires a unique hostId per machine — generate with: head -c4 /dev/urandom | od -A none -t x4
   networking.hostId = "8425e349";
 
+  # ── ZFS Data Pool ─────────────────────────────────────────────────────────
+  # rpool is not the root pool (root lives on ext4), so it must be explicitly
+  # imported. requestEncryptionCredentials is a list so that ONLY rpool/data
+  # (and its key-inheriting children) are decrypted at boot; other datasets in
+  # rpool that have separate keys, or whose canmount=noauto, are left alone.
+  #
+  # NOTE: Unencrypted datasets (or those that share rpool/data's key) in rpool
+  # will still mount if their canmount property is "on". To suppress unwanted
+  # mounts, run once per dataset: zfs set canmount=noauto <dataset>
+  boot.zfs.extraPools = ["rpool"];
+  # rpool is the encryption root for all datasets in the pool (single shared key,
+  # keylocation=prompt). Specifying ["rpool"] generates a boot-time key-loading
+  # unit that prompts for the passphrase before Ly starts. Child datasets mount
+  # based on their individual canmount properties — see below.
+  boot.zfs.requestEncryptionCredentials = ["rpool"];
+
   # ── GPU: NVIDIA GTX 680MX (Nouveau/NVE4) — Primary Renderer ──────────────
   # Apple EFI hides the Intel iGPU; rEFInd with spoof_osx_version unlocks it.
   # Proprietary NVIDIA 470 driver lacks Wayland/GBM support, so we use Nouveau.

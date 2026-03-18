@@ -13,6 +13,9 @@
     # External devices
     ./devices/brother-printer.nix
     ./devices/brother-scanner.nix
+
+    # System services
+    ./services/sanoid.nix
   ];
 
   # ZFS filesystem support

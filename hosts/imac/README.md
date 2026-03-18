@@ -11,7 +11,7 @@ Hostname: `imac` | Architecture: `x86_64-linux` | NixOS: `unstable`
 | GPU (media) | Intel HD 4000 (i915 — VA-API decode) |
 | Wi-Fi | Broadcom BCM4331 (broadcom-sta) |
 | Display | 27-inch internal + optional external |
-| Storage | Root on ext4; ZFS tools available |
+| Storage | Root on ext4; `rpool/data` (native ZFS encryption) auto-mounted at boot with passphrase prompt |
 
 ## Hardware Configuration File
 
@@ -24,6 +24,26 @@ Covers:
 - **ZFS**: filesystem support + TRIM
 - **zram**: 60 % of RAM as compressed swap (zstd)
 - **Session environment**: `AQ_DRM_DEVICES`, `LIBVA_DRIVER_NAME` for proper GPU routing
+
+## ZFS Data Pool
+
+`rpool/data` uses native ZFS encryption. During boot — before Ly starts — the system prompts for the passphrase in the initrd stage. After the key is loaded, `zfs-mount.service` mounts `rpool/data` and all child datasets using their ZFS `mountpoint` properties.
+
+**What mounts at boot:**
+- `rpool/data` and all children that inherit its encryption key
+- Children must have `canmount=on` (the default)
+
+**What does NOT mount:**
+- Other datasets in `rpool` encrypted with separate keys (no key is loaded for them)
+- Any dataset where `canmount=noauto` or `canmount=off` is set
+
+> **Preventing unwanted mounts**: If `rpool` contains unencrypted datasets (or datasets sharing `rpool/data`'s key) that should not auto-mount, run once per dataset:
+> ```bash
+> zfs set canmount=noauto <dataset>
+> ```
+> This is a one-time manual step — NixOS does not control existing ZFS dataset properties.
+
+**Sanoid snapshots** are managed declaratively in `configuration.nix` via `services.sanoid`. The timer fires every 15 minutes; the production template retains 36 hourlies, 30 dailies, and 3 monthlies.
 
 ## The "Apple EFI iGPU" Problem
 
@@ -65,6 +85,21 @@ sudo intel_gpu_top
 
 # Watch NVIDIA GPU
 nvtop
+
+# Verify rpool/data and children are mounted
+zfs list -r rpool/data
+
+# Check that the passphrase was loaded at boot
+zfs get keystatus rpool/data
+
+# Confirm sanoid timer is active and running every 15 min
+systemctl status sanoid.timer
+
+# Run sanoid manually to verify snapshot policy
+sudo sanoid --cron --verbose
+
+# List snapshots taken by sanoid
+zfs list -t snapshot -r rpool/data
 ```
 
 ## Rebuild
