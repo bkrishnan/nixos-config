@@ -4,12 +4,6 @@
   services.printing.enable = true;
   services.printing.browsed.enable = false;
 
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-
   hardware.printers = {
     ensurePrinters = [
       {
