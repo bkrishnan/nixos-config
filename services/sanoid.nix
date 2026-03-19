@@ -20,7 +20,8 @@
     else lib.generators.mkKeyValueDefault {inherit mkValueString;} "=" k v;
 in {
   # Expose sanoid/syncoid/findoid CLIs in PATH for manual runs.
-  environment.systemPackages = [pkgs.sanoid];
+  # mbuffer is used by syncoid for buffered ZFS stream transfers over SSH.
+  environment.systemPackages = [pkgs.sanoid pkgs.mbuffer];
 
   services.sanoid = {
     enable = true;
