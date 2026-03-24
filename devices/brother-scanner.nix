@@ -8,8 +8,8 @@
       netDevices = {
         home = {
           model = "MFC-J410W";
-          # mDNS nodename — more reliable than a DHCP IP address
-          nodename = "BRW00225857670B";
+          # mDNS nodename — must include .local so nss-mdns resolves it via Avahi
+          nodename = "BRN00225857670B.local";
         };
       };
     };
