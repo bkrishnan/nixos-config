@@ -16,5 +16,6 @@
       name = "Bibata-Modern-Classic";
       size = 24;
     };
+    gtk4.theme = null;
   };
 }
