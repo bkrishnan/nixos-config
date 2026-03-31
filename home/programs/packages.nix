@@ -37,5 +37,6 @@
     zip
     unzip
     python3
+    pdfarranger
   ];
 }
