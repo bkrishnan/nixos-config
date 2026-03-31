@@ -34,5 +34,7 @@
     wl-clipboard
     d2
     yaak
+    zip
+    unzip
   ];
 }
