@@ -36,5 +36,6 @@
     yaak
     zip
     unzip
+    python3
   ];
 }
