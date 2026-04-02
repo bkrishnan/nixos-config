@@ -34,8 +34,8 @@
     settings = {
       x_spec = "/run/current-system/sw/share/xsessions";
     };
-    defaultSession = "xfce";
   };
+  services.displayManager.defaultSession = "xfce";
 
   environment.systemPackages = with pkgs; [
     alacritty
