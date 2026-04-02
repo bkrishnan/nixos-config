@@ -43,7 +43,7 @@ Covers:
 > ```
 > This is a one-time manual step — NixOS does not control existing ZFS dataset properties.
 
-**Sanoid snapshots** are managed declaratively in `configuration.nix` via `services.sanoid`. The timer fires every 15 minutes; the production template retains 36 hourlies, 30 dailies, and 3 monthlies.
+**Sanoid snapshots** are managed declaratively in `modules/services/sanoid.nix` via `services.sanoid`. The timer fires every 15 minutes; the production template retains 36 hourlies, 30 dailies, and 3 monthlies.
 
 ## The "Apple EFI iGPU" Problem
 

@@ -1,5 +1,5 @@
 # Brother MFC-J410W — Network Scanner
-# Uses brscan4 driver (NOT brscan3, despite the device being older — see docs/README.md)
+# Uses brscan4 driver (NOT brscan3, despite the device being older — see brother-scanner.md)
 {...}: {
   hardware.sane = {
     enable = true;

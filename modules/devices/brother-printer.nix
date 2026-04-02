@@ -1,5 +1,6 @@
 # Brother HL-L2300D — Network Printer
 # Shared via IPP from a machine named "ubuntu" on the local network.
+# Requires modules/services/avahi.nix for .local hostname resolution.
 {...}: {
   services.printing.enable = true;
   services.printing.browsed.enable = false;

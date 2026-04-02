@@ -4,17 +4,11 @@
 
 The Brother HL-L2300D laser printer is configured as a network IPP (Internet Printing Protocol) printer, shared from another machine on the network. It uses Avahi (mDNS) for local hostname resolution to enable proper configuration overrides.
 
-The configuration is in `devices/brother-printer.nix`:
+The configuration is in `modules/devices/brother-printer.nix`. Avahi/mDNS support is provided by `modules/services/avahi.nix`, which must also be imported by the host.
 
 ```nix
 services.printing.enable = true;
 services.printing.browsed.enable = false;
-
-services.avahi = {
-  enable = true;
-  nssmdns4 = true;
-  openFirewall = true;
-};
 
 hardware.printers = {
   ensurePrinters = [
@@ -66,7 +60,7 @@ The printer is physically connected to a machine named `ubuntu` on your local ne
 ### Declarative Printer Management
 
 NixOS's `hardware.printers.ensurePrinters` ensures the printer configuration is:
-- **Declarative**: Defined in configuration.nix, version controlled
+- **Declarative**: Defined in version control, reproducible
 - **Idempotent**: Same configuration produces same result every time
 - **Persistent**: Survives system rebuilds and reboots
 
@@ -79,22 +73,19 @@ The `ensureDefaultPrinter` option sets this as the system default printer automa
 lpstat -p -d
 
 # Print a test page
-echo "Test print from NixOS" | lp -d Brother_HL-L2300D
+lp -d Brother_HL-L2300D /etc/nixos/configuration.nix
 
-# Check printer status
-lpstat -p Brother_HL-L2300D
-
-# View print queue
-lpq -P Brother_HL-L2300D
+# Verify mDNS resolution
+avahi-resolve --name ubuntu.local
 ```
 
 ## Troubleshooting
 
-### Printer not responding
+### Printer not found
 
-1. **Check network connectivity to the print server:**
+1. **Check mDNS resolution:**
    ```bash
-   ping ubuntu
+   avahi-resolve --name ubuntu.local
    ```
 
 2. **Verify IPP service is accessible:**
@@ -119,14 +110,14 @@ sudo systemctl restart cups
 
 ### Change paper size
 
-Edit `devices/brother-printer.nix` and change the `PageSize` option:
+Edit `modules/devices/brother-printer.nix` and change the `PageSize` option:
 ```nix
 ppdOptions = {
   PageSize = "A4";  # or "Letter", "Legal", etc.
 };
 ```
 
-Then rebuild: `sudo nixos-rebuild switch --flake .#imac`
+Then rebuild: `sudo nixos-rebuild switch --flake .#<hostname>`
 
 ## Network Requirements
 

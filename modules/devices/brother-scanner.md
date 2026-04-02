@@ -8,7 +8,7 @@ The **MFC-J410W requires brscan4**, not brscan3. NixOS has built-in support for 
 
 ## Configuration
 
-Add this to `configuration.nix`:
+The configuration is in `modules/devices/brother-scanner.nix`:
 
 ```nix
 hardware.sane = {
@@ -27,7 +27,7 @@ hardware.sane = {
 
 **Note**: Use either `nodename` (mDNS name) or `ip` (static IP), not both. The nodename is more reliable if your scanner's IP changes.
 
-That's it! After `sudo nixos-rebuild switch`, the scanner works. No need for avahi services or firewall configuration - the brscan4 module handles everything automatically.
+That's it! After `sudo nixos-rebuild switch --flake .#<hostname>`, the scanner works. No need for avahi services or firewall configuration - the brscan4 module handles everything automatically.
 
 ## Testing
 
