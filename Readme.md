@@ -94,6 +94,16 @@ Home Manager is split into two layers:
 4. Create `home/<hostname>.nix` — import `home/common.nix` and any host-specific program modules
 5. Add a `nixosConfigurations.<hostname>` entry to `flake.nix`
 
+> **Fresh installs — bootstrap flakes first.**
+> A stock NixOS install has flakes disabled. Before `nixos-rebuild --flake` will work,
+> add the following to `/etc/nixos/configuration.nix` on the new machine and run
+> `sudo nixos-rebuild switch` once:
+> ```nix
+> nix.settings.experimental-features = ["nix-command" "flakes"];
+> ```
+> After that, clone this repo and run `sudo nixos-rebuild switch --flake .#<hostname>` as normal.
+> See `hosts/<hostname>/README.md` for host-specific bootstrap steps.
+
 ```bash
 sudo nixos-rebuild switch --flake .#<hostname>
 ```

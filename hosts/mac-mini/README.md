@@ -37,6 +37,34 @@ Covers:
 
 3. **Confirm boot loader**: Check whether the installer booted in EFI or BIOS mode and update `hardware.nix` accordingly.
 
+## Bootstrapping Flakes on a Fresh NixOS Install
+
+A stock NixOS installation does not have flakes enabled, so `nixos-rebuild --flake` won't work out of the box. You need to enable flakes first using the default imperative config, then switch to this repo.
+
+**Step 1 — Enable flakes in the installer config.**
+Edit `/etc/nixos/configuration.nix` (the one the installer generated) and add:
+```nix
+nix.settings.experimental-features = ["nix-command" "flakes"];
+```
+Then apply it:
+```bash
+sudo nixos-rebuild switch
+```
+
+**Step 2 — Clone this repo.**
+```bash
+sudo nixos-install --no-root-passwd  # skip if already installed
+git clone <repo-url> ~/nixos-config
+cd ~/nixos-config
+```
+
+**Step 3 — Switch to the flake config.**
+```bash
+sudo nixos-rebuild switch --flake ~/nixos-config#mac-mini
+```
+
+After this first switch, the flake's `modules/common.nix` takes over managing `nix.settings.experimental-features`, so the installer config is no longer used.
+
 ## Desktop Environment
 
 This host uses **XFCE** as the desktop environment with the **Ly** display manager.

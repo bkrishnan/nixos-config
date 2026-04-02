@@ -104,6 +104,23 @@ Create `modules/services/<service>.nix` and import it in the relevant host's `co
 
 ## Adding a New Host
 
+### Step 0 — Bootstrap flakes on the new machine
+
+A stock NixOS install has flakes disabled. `nixos-rebuild --flake` will fail until
+you enable them via the default imperative config first.
+
+1. On the new machine, edit `/etc/nixos/configuration.nix` and add:
+   ```nix
+   nix.settings.experimental-features = ["nix-command" "flakes"];
+   ```
+2. Apply it: `sudo nixos-rebuild switch`
+3. Clone this repo: `git clone <repo-url> ~/nixos-config`
+
+After the first `nixos-rebuild switch --flake .#<hostname>`, `modules/common.nix`
+takes over and the installer config is no longer needed.
+
+### Step 1–6 — Add the host to the repo
+
 1. Create `hosts/<hostname>/hardware.nix` — boot loader, GPU driver, `networking.hostId` (if using ZFS)
 2. Create `hosts/<hostname>/hardware-configuration.nix` — output of `nixos-generate-config --root /mnt`
 3. Create `hosts/<hostname>/configuration.nix`:
