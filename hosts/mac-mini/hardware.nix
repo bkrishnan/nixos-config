@@ -23,9 +23,12 @@
   ];
 
 
-  # ── GPU: NVIDIA GeForce 9400M (NV50/Tesla — Nouveau driver) ──────────────
-  # The 9400M is supported by the open-source Nouveau driver.
-  services.xserver.videoDrivers = ["nouveau"];
+  # ── GPU: NVIDIA GeForce 9400M (NV50/Tesla — Nouveau via KMS) ─────────────
+  # Use the modesetting DDX (built into xorg-server) rather than
+  # xf86-video-nouveau, which fails to load on xorg-server 21.1.x due to a
+  # missing exaDriverAlloc symbol. The nouveau kernel DRM module still drives
+  # the hardware; modesetting uses it via KMS.
+  services.xserver.videoDrivers = ["modesetting"];
 
   # ── ZFS hostId ────────────────────────────────────────────────────────────
   networking.hostId = "da5f4042";

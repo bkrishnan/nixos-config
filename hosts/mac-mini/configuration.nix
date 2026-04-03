@@ -29,13 +29,7 @@
   networking.hostName = "mac-mini";
 
   # Ly TUI display manager — point it at the X11 session files XFCE installs.
-  services.displayManager.ly = {
-    enable = true;
-    settings = {
-      x_spec = "/run/current-system/sw/share/xsessions";
-    };
-  };
-  services.displayManager.defaultSession = "xfce";
+  services.displayManager.ly.enable = true;
 
   environment.systemPackages = with pkgs; [
     alacritty
