@@ -20,7 +20,7 @@ A modular, flake-based NixOS monorepo using **Home Manager** (integrated as a Ni
 │   │   ├── openssh.nix              # SSH server (pubkey-only)
 │   │   ├── tailscale.nix            # Tailscale VPN
 │   │   ├── avahi.nix                # mDNS / .local resolution (required for printer)
-│   │   ├── zfs.nix                  # ZFS support + zram swap
+│   │   ├── zfs.nix                  # ZFS support
 │   │   └── sanoid.nix               # Automated ZFS snapshot management
 │   └── devices/
 │       ├── brother-printer.nix      # Brother HL-L2300D (IPP network printer)
@@ -71,7 +71,7 @@ hosts/imac/configuration.nix
   └── modules/desktop/hyprland.nix # Wayland WM
   └── modules/desktop/i3.nix       # X11 WM
   └── modules/desktop/gnome.nix    # GNOME
-  └── modules/services/zfs.nix     # ZFS + zram (iMac only)
+  └── modules/services/zfs.nix     # ZFS (iMac only)
   └── modules/services/sanoid.nix  # ZFS snapshots (iMac only)
   └── …
 ```

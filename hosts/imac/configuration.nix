@@ -21,7 +21,7 @@
     ../../modules/services/openssh.nix
     ../../modules/services/tailscale.nix
     ../../modules/services/avahi.nix # mDNS — required for printer/scanner .local resolution
-    ../../modules/services/zfs.nix # ZFS support + zram (hostId set in hardware.nix)
+    ../../modules/services/zfs.nix # ZFS support (hostId set in hardware.nix)
     ../../modules/services/sanoid.nix # Automated ZFS snapshots
 
     # Peripheral devices

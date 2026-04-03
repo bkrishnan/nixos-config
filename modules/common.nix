@@ -51,6 +51,14 @@
   # Allow non-Nix binaries to be run gracefully (e.g. Shopify's javy).
   programs.nix-ld.enable = true;
 
+  # zram swap — compressed in-memory swap, faster than disk and reduces writes.
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd"; # Good balance of speed and compression ratio
+    memoryPercent = 60; # Percentage of total RAM to use for zram
+    priority = 10; # Higher than disk swap priority
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. Never change this unless performing a

@@ -7,7 +7,7 @@ This is a **multi-host NixOS Flake monorepo** managed by user `bkrishnan`, runni
 ### File Hierarchy
 
 - `flake.nix` — Entry point. Pins `nixpkgs` (nixos-unstable) and `home-manager` (unstable). Defines one `nixosConfigurations` entry per host (currently: `imac`, `mac-mini`).
-- `modules/common.nix` — Shared base config imported by every host: locale, fonts, user account (`bkrishnan`), shell, `programs.nix-ld`, `programs.direnv`, nix settings, `system.stateVersion`.
+- `modules/common.nix` — Shared base config imported by every host: locale, fonts, user account (`bkrishnan`), shell, `programs.nix-ld`, `programs.direnv`, nix settings, zram swap, `system.stateVersion`.
 - `modules/desktop/*.nix` — Desktop environment modules. Each host imports the ones it wants.
   - `hyprland.nix` — `programs.hyprland.enable` + Wayland system packages
   - `i3.nix` — `services.xserver.windowManager.i3.enable` + X11 packages

@@ -22,7 +22,6 @@ Covers:
 - **Broadcom Wi-Fi**: `wl` kernel module + blacklist of conflicting open-source drivers
 - **Dual-GPU load balancing**: Nouveau (desktop render) + Intel i915 (VA-API video decode)
 - **ZFS**: filesystem support + TRIM
-- **zram**: 60 % of RAM as compressed swap (zstd)
 - **Session environment**: `AQ_DRM_DEVICES`, `LIBVA_DRIVER_NAME` for proper GPU routing
 
 ## ZFS Data Pool
