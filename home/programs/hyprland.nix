@@ -4,9 +4,11 @@
 
     settings = {
       # ── Monitors ──────────────────────────────────────────────
+      # Generic fallback: auto-detect all connected displays at their
+      # preferred resolution. Per-host overrides (e.g. iMac dual-monitor
+      # layout) are applied in home/<hostname>.nix via lib.mkForce.
       monitor = [
-        "DP-1, 2560x1440, 1920x0, 1"
-        "DP-2, 1920x1080, 0x180, 1"
+        ", preferred, auto, 1"
       ];
 
       # ── Autostart ─────────────────────────────────────────────

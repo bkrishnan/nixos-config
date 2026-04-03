@@ -1,6 +1,6 @@
 # Home Manager — bkrishnan on the iMac.
 # Imports common programs and adds the full Hyprland/Wayland + i3/X11 desktop stack.
-{...}: {
+{lib, ...}: {
   imports = [
     ./common.nix
 
@@ -21,6 +21,15 @@
     ./programs/foot.nix
     ./programs/rofi.nix
     ./programs/cursor.nix
+  ];
+
+  # iMac dual-monitor layout: 1440p right (primary) + 1080p left.
+  # Overrides the generic ", preferred, auto, 1" fallback in programs/hyprland.nix.
+  # The catch-all rule at the end handles any third display that might be connected.
+  wayland.windowManager.hyprland.settings.monitor = lib.mkForce [
+    "DP-1, 2560x1440, 1920x0, 1"
+    "DP-2, 1920x1080, 0x180, 1"
+    ", preferred, auto, 1"
   ];
 
   # iMac-specific xrandr layout: 1080p left monitor + 1440p primary right monitor.
