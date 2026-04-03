@@ -15,6 +15,7 @@
 
     # Desktop environment
     ../../modules/desktop/xfce.nix
+    ../../modules/desktop/i3.nix # X11 window manager
 
     # System services
     ../../modules/services/openssh.nix

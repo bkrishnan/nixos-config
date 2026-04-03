@@ -22,4 +22,14 @@
     ./programs/rofi.nix
     ./programs/cursor.nix
   ];
+
+  # iMac-specific xrandr layout: 1080p left monitor + 1440p primary right monitor.
+  # Appended to the shared startup list defined in programs/i3.nix.
+  xsession.windowManager.i3.config.startup = [
+    {
+      command = "xrandr --output DP-0 --off --output DP-1 --mode 1920x1080 --pos 0x180 --rotate normal --output DP-2 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --output DP-3 --off --output DP-4 --off";
+      always = true;
+      notification = false;
+    }
+  ];
 }
