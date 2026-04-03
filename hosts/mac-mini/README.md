@@ -18,8 +18,10 @@ Hostname: `mac-mini` | Architecture: `x86_64-linux` | NixOS: `unstable`
 
 Covers:
 - **Boot**: systemd-boot (EFI) or GRUB — confirm after installation
-- **GPU**: Nouveau driver for NVIDIA GeForce 9400M
+- **GPU**: Nouveau driver for NVIDIA GeForce 9400M (modesetting DDX)
 - **ZFS hostId**: must be set to a unique value before first boot
+
+For full GPU details, driver rationale, why Hyprland is not viable, and Chrome/YouTube video tips, see [nvidia.md](./nvidia.md).
 
 ## Desktop Environment
 

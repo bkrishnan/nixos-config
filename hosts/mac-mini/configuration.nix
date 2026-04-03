@@ -33,5 +33,7 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
+    pciutils # lspci — verify GPU/PCI layout
+    mesa-demos # glxinfo — confirm active renderer
   ];
 }
