@@ -13,6 +13,8 @@
   boot.kernelParams = [
     "nouveau.config=NvBoost=1" # Prevent Nouveau GPU clock drops
     "nouveau.modeset=1"
+    # Prevent Sabrent USB controller from crashing and resetting under the heavy I/O load of a ZFS send.
+    "usb-storage.quirks=152d:a578:u"
   ];
 
   # Broadcom BCM4331 Wi-Fi (requires proprietary broadcom-sta)
