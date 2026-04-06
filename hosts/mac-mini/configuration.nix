@@ -36,5 +36,10 @@
     alacritty
     pciutils # lspci — verify GPU/PCI layout
     mesa-demos # glxinfo — confirm active renderer
+    dosbox-staging
+    supertux
+    # frozen-bubble
+    pingus
+    extremetuxracer
   ];
 }
