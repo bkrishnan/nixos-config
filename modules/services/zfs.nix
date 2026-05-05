@@ -5,6 +5,7 @@
 {pkgs, ...}: {
   boot.supportedFilesystems = ["zfs"];
   boot.zfs.package = pkgs.zfs;
+  boot.zfs.forceImportRoot = false;
   services.zfs.trim.enable = true;
 
   environment.systemPackages = [pkgs.zfs]; # ZFS CLI tools (zpool, zfs, etc.)
